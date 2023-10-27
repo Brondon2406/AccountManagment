@@ -19,32 +19,32 @@ public class UtilsAccount {
 		return false;
 	}
 	
-	public static int notEmpty(Collection<?> collections) {
+	public static boolean notEmpty(Collection<?> collections) {
 		try {
 			if(collections.isEmpty()) {
-				return 0;
+				return false;
 			}
 			if(collections.size() > 0) {
-				return collections.size();
+				return true;
 			}
 		} catch (Exception e) {
 			
 		}
-		return 0;
+		return false;
 	}
 	
-	public static int notEmpty(List<?> collections) {
+	public static boolean notEmpty(List<?> collections) {
 		try {
 			if(collections.isEmpty()) {
-				return 0;
+				return false;
 			}
-			if(collections.size() == 0) {
-				return 0;
+			if(collections.size() > 0) {
+				return true;
 			}
 		} catch (Exception e) {
 			
 		}
-		return 0;
+		return false;
 	}
 	
 	public static int getsize(Collection<?> collections) {

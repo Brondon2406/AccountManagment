@@ -1,37 +1,38 @@
 package model.services.implementationsDAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.databaseConnector.DatabaseConnection;
-import model.entities.Status;
-import model.services.interfaceDAO.StatusDAO;
+import model.entities.Profile;
+import model.services.interfaceDAO.ProfileDAO;
 import model.utils.UtilsAccount;
 
-public class StatusImplMetho implements StatusDAO {
+public class ProfileImplDAO implements ProfileDAO{
+	
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
-	private Status status;
+	private Profile profile;
 
 	@Override
-	public Status getStatusById(int id) throws SQLException {
+	public Profile getProfileById(int id) throws SQLException {
 		if (id > 0) {
 			try {
-				query = "SELECT * FROM STATUS WHERE id=?";
+				query = "SELECT * FROM PROFILE WHERE id=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, id);
 				ResultSet result = statement.executeQuery();
 
 				while (result.next()) {
-					status.setId(id);
-					status.setName(result.getString("name"));
+					profile.setId(id);
+					profile.setName(result.getString("name"));
 				}
 
-				return UtilsAccount.notEmpty(status) ? status : null;
+				return UtilsAccount.notEmpty(profile) ? profile : null;
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				return null;
@@ -41,21 +42,21 @@ public class StatusImplMetho implements StatusDAO {
 	}
 
 	@Override
-	public List<Status> getAllStatus() throws SQLException {
-		List<Status> listStatus = new ArrayList<>();
+	public List<Profile> getAllProfile() throws SQLException {
+		List<Profile> listProfile = new ArrayList<>();
 		try {
-			query = "SELECT * FROM STATUS";
+			query = "SELECT * FROM PROFILE";
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				status.setId(result.getInt("id"));
-				status.setName(result.getString("name"));
-				if (UtilsAccount.notEmpty(status)) {
-					listStatus.add(status);
+				profile.setId(result.getInt("id"));
+				profile.setName(result.getString("name"));
+				if (UtilsAccount.notEmpty(profile)) {
+					listProfile.add(profile);
 				}
 			}
-			return UtilsAccount.notEmpty(listStatus) ? listStatus : null;
+			return UtilsAccount.notEmpty(listProfile) ? listProfile : null;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;

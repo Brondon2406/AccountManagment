@@ -4,6 +4,7 @@ public class Login {
 	private int id;
 	private String login;
 	private String password;
+	private int idUser;
 	
 	public Login() {
 		super();
@@ -28,8 +29,16 @@ public class Login {
 		this.password = password;
 	}
 	
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
+
 	@Override
 	public String toString() {
-		return "Login [id=" + id + ", login=" + login + ", password=" + password + "]";
+		return "Login [id=" + id + ", login=" + login + ", password=" + password + ", idUser=" + idUser + "]";
 	}
 }
