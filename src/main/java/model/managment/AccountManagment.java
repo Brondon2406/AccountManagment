@@ -17,8 +17,13 @@ import model.utils.UtilsAccount;
 import java.sql.SQLException;
 import java.util.List;
 
+import java.util.ArrayList;
+
 import model.entities.Account;
 import model.entities.Branches;
+import model.entities.Login;
+import model.entities.Profile;
+import model.entities.Status;
 import model.entities.Users;
 
 public class AccountManagment {
@@ -147,6 +152,75 @@ public class AccountManagment {
 		if(id > 0) {
 			Branches branch = branchDao.getBrancheById(id);
 			return UtilsAccount.notEmpty(branch) ? branch : null;
+		}
+		return null;
+	}
+	
+	public List<Branches> getAllBranches() throws SQLException{
+		List<Branches> branches = branchDao.getAllBranches();
+		return UtilsAccount.notEmpty(branches) ? branches : null;
+	}
+	
+	public List<Branches> getBranchesByStatus(int idStatus) throws SQLException{
+		List<Branches> branches = new ArrayList<>();
+		if(idStatus > 0) {
+			List<Branches> listAllBranches = getAllBranches();
+			if(UtilsAccount.notEmpty(listAllBranches)) {
+				for(Branches branch  : listAllBranches) {
+					if(branch.getStatus() == idStatus) {
+						branches.add(branch);
+					}
+				}
+			}
+		}
+		return branches;
+	}
+	
+	public Login getLoginById(int idLogin) throws SQLException{
+		if(idLogin > 0) {
+			Login login = loginDao.getLoginById(idLogin);
+			return UtilsAccount.notEmpty(login) ? login : null;
+		}
+		return null;
+	}
+	
+	public List<Login> getAllLogin() throws SQLException{
+		List<Login> allLogins = loginDao.getAllLogin();
+		return UtilsAccount.notEmpty(allLogins) ? allLogins : null;
+	}
+	
+	public Login getLoginByUserLogin(String userLogin) throws SQLException{
+		if(UtilsAccount.notEmpty(userLogin)) {
+			Login login = new Login();
+			List<Login> allLogins = loginDao.getAllLogin();
+			for(Login log : allLogins) {
+				if(log.getLogin().equalsIgnoreCase(userLogin)) {
+					login = log;
+					break;
+				}
+			}
+			return UtilsAccount.notEmpty(login) ? login : null;
+		}
+		return null;
+	}
+	
+	public Profile getProfileById(int idProfile) throws SQLException{
+		if(idProfile > 0) {
+			Profile profile = profileDao.getProfileById(idProfile);
+			return UtilsAccount.notEmpty(profile) ? profile : null;
+		}
+		return null;
+	}
+	
+	public List<Profile> getAllProfile() throws SQLException{
+		List<Profile> allProfile = profileDao.getAllProfile();
+		return UtilsAccount.notEmpty(allProfile) ? allProfile : null;
+	}
+	
+	public Status getStatusByid(int idStatus) throws SQLException{
+		if(idStatus > 0) {
+			Status status = statusDao.getStatusById(idStatus);
+			return UtilsAccount.notEmpty(status) ? status : null;
 		}
 		return null;
 	}
