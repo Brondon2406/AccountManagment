@@ -1,14 +1,15 @@
 package model.services.interfaceDAO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import model.entities.Account;
 
 public interface AccountDAO {
-	public Account getAccountById(int id);
-	public Account getAccountByAccountId(String accountId);
-	public Account getAccountByUserId(int userId);
-	public List<Account> getListAccountByUserId(int userId);
-	public List<Account> getListAccountByAccountProfile(int accountProfile);
-	public List<Account> getAllAccount();
+	public Account getAccountById(int id) throws SQLException;
+	public Account getAccountByAccountId(String accountNumber) throws SQLException;
+	public Account getAccountByUserId(int userId) throws SQLException;
+	public List<Account> getListAccountByUserId(int userId) throws SQLException;
+	public List<Account> getListAccountByAccountProfile(int accountProfile) throws SQLException;
+	public List<Account> getAllAccount() throws SQLException;
 }

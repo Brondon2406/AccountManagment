@@ -7,7 +7,7 @@ public class Branches {
 	private String name;
 	private String address;
 	private int idHeader;
-	private String numberAgent;
+	private int numberAgent;
 	private int status;
 	private List<Users> listUsers;
 	
@@ -47,11 +47,11 @@ public class Branches {
 		this.idHeader = idHeader;
 	}
 
-	public String getNumberAgent() {
+	public int getNumberAgent() {
 		return numberAgent;
 	}
 
-	public void setNumberAgent(String numberAgent) {
+	public void setNumberAgent(int numberAgent) {
 		this.numberAgent = numberAgent;
 	}
 	
