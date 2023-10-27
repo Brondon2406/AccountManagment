@@ -12,8 +12,8 @@ import model.entities.Login;
 import model.services.interfaceDAO.LoginDAO;
 import model.utils.UtilsAccount;
 
-public class LoginImplDAO implements LoginDAO{
-	
+public class LoginImplDAO implements LoginDAO {
+
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
 	private Login login;
@@ -66,4 +66,46 @@ public class LoginImplDAO implements LoginDAO{
 			return null;
 		}
 	}
+
+	@Override
+	public Login createLogin(Login login) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(login)) {
+				query = "INSERT INTO LOGIN (login,password,idUser) VALUES (?,?,?)";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, login.getLogin());
+				statement.setString(2, login.getPassword());
+				statement.setInt(3, login.getIdUser());
+				
+				int result = statement.executeUpdate();
+				if(result > 0) login.setId(result);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		return login;
+	}
+
+	@Override
+	public boolean updateLogin(Login login) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(login)) {
+				query = "UPDATE LOGIN" + "SET login = ?," + "password = ?," + "idUser = ?" + "WHERE id = ?";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, login.getLogin());
+				statement.setString(2, login.getPassword());
+				statement.setInt(3, login.getIdUser());
+				statement.setInt(4, login.getId());
+				
+				int result = statement.executeUpdate();
+				return result > 0 ? true : false;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return false;
+	}
+
 }

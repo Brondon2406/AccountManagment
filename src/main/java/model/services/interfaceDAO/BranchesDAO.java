@@ -9,6 +9,6 @@ public interface BranchesDAO {
 	
 	public Branches getBrancheById(int idBranch) throws SQLException;
 	public List<Branches> getAllBranches() throws SQLException;
-	public List<Branches> getBranchesByStatus(int idStatus) throws SQLException;
-	public List<Branches> getBranchesByName(String name) throws SQLException;
+	public Branches createBranch(Branches branch) throws SQLException;
+	public boolean updateBranches(Branches branch) throws SQLException;
 }

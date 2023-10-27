@@ -14,4 +14,6 @@ public interface UsersDAO {
 	public List<Users> getUsersByProfile(int idProfile) throws SQLException;
 	public List<Users> getUsersByStatus(int idStatus) throws SQLException;
 	public List<Users> getUsersByBranchesId(int idBranch) throws SQLException;
+	public Users createUsers(Users use) throws SQLException;
+	public boolean updateUsers(Users user) throws SQLException;
 }

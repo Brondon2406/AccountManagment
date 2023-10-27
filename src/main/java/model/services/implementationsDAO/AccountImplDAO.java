@@ -22,7 +22,7 @@ public class AccountImplDAO implements AccountDAO{
 	public Account getAccountById(int id) throws SQLException{
 		if (id > 0) {
 			try {
-				query = "SELECT * FROM ACCOUNT WHERE id=?;";
+				query = "SELECT * FROM ACCOUNT WHERE id=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, id);
 				ResultSet result = statement.executeQuery();
@@ -49,7 +49,7 @@ public class AccountImplDAO implements AccountDAO{
 	public Account getAccountByAccountId(String accountNumber) throws SQLException{
 		if (UtilsAccount.notEmpty(accountNumber)) {
 			try {
-				query = "SELECT * FROM ACCOUNT WHERE accountNumber=?;";
+				query = "SELECT * FROM ACCOUNT WHERE accountNumber=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, accountNumber);
 				ResultSet result = statement.executeQuery();
@@ -76,7 +76,7 @@ public class AccountImplDAO implements AccountDAO{
 	public Account getAccountByUserId(int userId) throws SQLException{
 		if (userId > 0) {
 			try {
-				query = "SELECT * FROM ACCOUNT WHERE accountUserId=?;";
+				query = "SELECT * FROM ACCOUNT WHERE accountUserId=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, userId);
 				ResultSet result = statement.executeQuery();
@@ -104,7 +104,7 @@ public class AccountImplDAO implements AccountDAO{
 		if(userId > 0) {
 			List<Account> listAccount = new ArrayList<>();
 			try {
-				query = "SELECT * FROM ACCOUNT WHERE accountUserId=?;";
+				query = "SELECT * FROM ACCOUNT WHERE accountUserId=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, userId);
 				ResultSet result = statement.executeQuery();
@@ -134,7 +134,7 @@ public class AccountImplDAO implements AccountDAO{
 		if(accountProfile > 0) {
 			List<Account> listAccount = new ArrayList<>();
 			try {
-				query = "SELECT * FROM ACCOUNT WHERE accountProfileId=?;";
+				query = "SELECT * FROM ACCOUNT WHERE accountProfileId=?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, accountProfile);
 				ResultSet result = statement.executeQuery();
@@ -163,7 +163,7 @@ public class AccountImplDAO implements AccountDAO{
 	public List<Account> getAllAccount() throws SQLException{
 		List<Account> listAccount = new ArrayList<>();
 		try {
-			query = "SELECT * FROM ACCOUNT;";
+			query = "SELECT * FROM ACCOUNT";
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
@@ -184,5 +184,57 @@ public class AccountImplDAO implements AccountDAO{
 			return null;
 		}
 	}
-	
+
+	@Override
+	public Account createAccount(Account account) throws SQLException {
+		if(UtilsAccount.notEmpty(account)) {
+			try {
+				query = "INSERT INTO ACCOUNT (accountNumber,accountProfileId,balance,accountUserId,statusId) "
+						+ "VALUES (?,?,?,?,?)";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, account.getAccountNumber());
+				statement.setInt(2, account.getAccountProfile());
+				statement.setFloat(3, account.getBalance());
+				statement.setInt(4, account.getUserId());
+				statement.setInt(5, account.getStatus());
+				
+				int result = statement.executeUpdate();
+				if(result > 0) account.setId(result);
+				return account;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return account;
+			}
+		}
+		return account;
+	}
+
+	@Override
+	public boolean updateAccount(Account account) throws SQLException {
+		if(UtilsAccount.notEmpty(account)) {
+			try {
+				query = "UPDATE ACCOUNT"
+						+ "SET accountNumber = ?,"
+						+ "accountProfileId = ?,"
+						+ "balance = ?,"
+						+ "accountUserId = ?,"
+						+ "statusId = ?"
+						+ "WHERE id = ?";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, account.getAccountNumber());
+				statement.setInt(2, account.getAccountProfile());
+				statement.setFloat(3, account.getBalance());
+				statement.setInt(4, account.getUserId());
+				statement.setInt(5, account.getStatus());
+				statement.setInt(6, account.getId());
+				
+				int result = statement.executeUpdate();
+				return result > 0 ? true: false;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return false;
+			}
+		}
+		return false;
+	}
 }

@@ -61,4 +61,41 @@ public class StatusImplMetho implements StatusDAO {
 			return null;
 		}
 	}
+
+	@Override
+	public Status createStatus(Status status) throws SQLException {
+		try {
+			query = "INSERT INTO STATUS (name) VALUES (?)";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, status.getName());
+
+			int result = statement.executeUpdate();
+			if (result > 0)
+				status.setId(result);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return status;
+		}
+		return status;
+	}
+
+	@Override
+	public boolean updateStatus(Status status) throws SQLException {
+		if(UtilsAccount.notEmpty(status)) {
+			try {
+				query = "UPDATE STATUS SET name = ? WHERE id = ?";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, status.getName());
+				statement.setInt(2, status.getId());
+
+				int result = statement.executeUpdate();
+				return result > 0 ? true : false;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return false;
+			}
+		}
+		return false;
+	}
+
 }

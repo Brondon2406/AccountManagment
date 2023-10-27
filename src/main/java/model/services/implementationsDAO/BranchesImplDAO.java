@@ -12,7 +12,7 @@ import model.entities.Branches;
 import model.services.interfaceDAO.BranchesDAO;
 import model.utils.UtilsAccount;
 
-public class BranchesImplDAO implements BranchesDAO{
+public class BranchesImplDAO implements BranchesDAO {
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
 	private Branches branch;
@@ -59,7 +59,7 @@ public class BranchesImplDAO implements BranchesDAO{
 				branch.setIdHeader(result.getInt("idHeader"));
 				branch.setNumberAgent(result.getInt("numberAgent"));
 				branch.setStatus(result.getInt("idStatus"));
-				
+
 				branches.add(branch);
 			}
 
@@ -71,15 +71,50 @@ public class BranchesImplDAO implements BranchesDAO{
 	}
 
 	@Override
-	public List<Branches> getBranchesByStatus(int idStatus) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Branches createBranch(Branches branch) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(branch)) {
+				query = "INSERT INTO BRANCHES (name,address,idHeader,numberAgent,idStatus) " + "VALUES (?,?,?,?,?)";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, branch.getName());
+				statement.setString(2, branch.getAddress());
+				statement.setInt(3, branch.getIdHeader());
+				statement.setInt(4, branch.getNumberAgent());
+				statement.setInt(5, branch.getStatus());
+
+				int result = statement.executeUpdate();
+				if (result > 0)
+					branch.setId(result);
+				return branch;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return branch;
+		}
+		return branch;
 	}
 
 	@Override
-	public List<Branches> getBranchesByName(String name) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean updateBranches(Branches branch) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(branch)) {
+				query = "UPDATE BRANCHES" + "SET name = ?," + "address = ?," + "idHeader = ?," + "numberAgent = ?,"
+						+ "idStatus = ?" + "WHERE id = ?";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, branch.getName());
+				statement.setString(2, branch.getAddress());
+				statement.setInt(3, branch.getIdHeader());
+				statement.setInt(4, branch.getNumberAgent());
+				statement.setInt(5, branch.getStatus());
+				statement.setInt(6, branch.getId());
+				
+				int result = statement.executeUpdate();
+				return result > 0 ? true : false;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return false;
 	}
-	
 }

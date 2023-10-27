@@ -12,8 +12,8 @@ import model.entities.Profile;
 import model.services.interfaceDAO.ProfileDAO;
 import model.utils.UtilsAccount;
 
-public class ProfileImplDAO implements ProfileDAO{
-	
+public class ProfileImplDAO implements ProfileDAO {
+
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
 	private Profile profile;
@@ -62,4 +62,42 @@ public class ProfileImplDAO implements ProfileDAO{
 			return null;
 		}
 	}
+
+	@Override
+	public Profile createProfile(Profile profile) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(profile)) {
+				query = "INSERT INTO PROFILE (name) VALUES (?)";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, profile.getName());
+
+				int result = statement.executeUpdate();
+				if (result > 0)
+					profile.setId(result);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return profile;
+		}
+		return profile;
+	}
+
+	@Override
+	public boolean updateProfile(Profile profile) throws SQLException {
+		try {
+			if (UtilsAccount.notEmpty(profile)) {
+				query = "UPDATE PROFILE SET name = ? WHERE id = ?";
+				PreparedStatement statement = con.prepareStatement(query);
+				statement.setString(1, profile.getName());
+
+				int result = statement.executeUpdate();
+				return result > 0 ? true : false;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return false;
+	}
+
 }

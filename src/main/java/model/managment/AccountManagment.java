@@ -102,6 +102,20 @@ public class AccountManagment {
 		return null;
 	}
 	
+	public Users createUsers(Users user) throws SQLException{
+		if(UtilsAccount.notEmpty(user)) {
+			user = userDAO.createUsers(user);
+		}
+		return user;
+	}
+	
+	public boolean updateUsers (Users user) throws SQLException{
+		if(UtilsAccount.notEmpty(user)) {
+			return userDAO.updateUsers(user);
+		}
+		return false;
+	}
+	
 	// On this way we will create all method for account class
 	public Account getAccountById(int id) throws SQLException{
 		if(id > 0) {
@@ -148,6 +162,20 @@ public class AccountManagment {
 		return null;
 	}
 	
+	public Account createAccount(Account account) throws SQLException {
+		if(UtilsAccount.notEmpty(account)) {
+			account = accountDao.createAccount(account);
+		}
+		return account;
+	}
+	
+	public boolean UpdateAccount(Account account) throws SQLException{
+		if(UtilsAccount.notEmpty(account)) {
+			return accountDao.updateAccount(account);
+		}
+		return false;
+	}
+	
 	public Branches getBranchById(int id) throws SQLException {
 		if(id > 0) {
 			Branches branch = branchDao.getBrancheById(id);
@@ -174,6 +202,20 @@ public class AccountManagment {
 			}
 		}
 		return branches;
+	}
+	
+	public Branches createBranches(Branches branch) throws SQLException{
+		if(UtilsAccount.notEmpty(branch)) {
+			branch = branchDao.createBranch(branch);
+		}
+		return branch;
+	}
+	
+	public boolean updateBranches(Branches branch) throws SQLException {
+		if(UtilsAccount.notEmpty(branch)) {
+			return branchDao.updateBranches(branch);
+		}
+		return false;
 	}
 	
 	public Login getLoginById(int idLogin) throws SQLException{
@@ -204,6 +246,20 @@ public class AccountManagment {
 		return null;
 	}
 	
+	public Login createLogin(Login login) throws SQLException{
+		if(UtilsAccount.notEmpty(login)) {
+			login = loginDao.createLogin(login);
+		}
+		return login;
+	}
+	
+	public boolean updateLogin(Login login) throws SQLException{
+		if(UtilsAccount.notEmpty(login)) {
+			return loginDao.updateLogin(login);
+		}
+		return false;
+	}
+	
 	public Profile getProfileById(int idProfile) throws SQLException{
 		if(idProfile > 0) {
 			Profile profile = profileDao.getProfileById(idProfile);
@@ -217,12 +273,45 @@ public class AccountManagment {
 		return UtilsAccount.notEmpty(allProfile) ? allProfile : null;
 	}
 	
+	public Profile createProfile(Profile profile) throws SQLException{
+		if(UtilsAccount.notEmpty(profile)) {
+			profile = profileDao.createProfile(profile);
+		}
+		return profile;
+	}
+	
+	public boolean updateProfile(Profile profile) throws SQLException{
+		if(UtilsAccount.notEmpty(profile)) {
+			return profileDao.updateProfile(profile);
+		}
+		return false;
+	}
+	
 	public Status getStatusByid(int idStatus) throws SQLException{
 		if(idStatus > 0) {
 			Status status = statusDao.getStatusById(idStatus);
 			return UtilsAccount.notEmpty(status) ? status : null;
 		}
 		return null;
+	}
+	
+	public List<Status> listAllStatus() throws SQLException{
+		List<Status> listAllStatus = statusDao.getAllStatus();
+		return UtilsAccount.notEmpty(listAllStatus) ? listAllStatus : null;
+	}
+	
+	public Status createStatus(Status status) throws SQLException{
+		if(UtilsAccount.notEmpty(status)) {
+			status = statusDao.createStatus(status);
+		}
+		return status;
+	}
+	
+	public boolean updateStatus(Status status) throws SQLException {
+		if(UtilsAccount.notEmpty(status)) {
+			return statusDao.updateStatus(status);
+		}
+		return false;
 	}
 
 }
