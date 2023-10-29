@@ -32,6 +32,10 @@ public class LoginImplDAO implements LoginDAO {
 					login.setLogin(result.getString("login"));
 					login.setPassword(result.getString("password"));
 					login.setIdUser(result.getInt("idUser"));
+					login.setTokenlogin(result.getString("tokenLogin"));
+					login.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					login.setModificationDateToken(
+							UtilsAccount.convertStringToDate(result.getString("modificationDateToken")));
 				}
 
 				return UtilsAccount.notEmpty(login) ? login : null;
@@ -56,6 +60,10 @@ public class LoginImplDAO implements LoginDAO {
 				login.setLogin(result.getString("login"));
 				login.setPassword(result.getString("password"));
 				login.setIdUser(result.getInt("idUser"));
+				login.setTokenlogin(result.getString("tokenLogin"));
+				login.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+				login.setModificationDateToken(
+						UtilsAccount.convertStringToDate(result.getString("modificationDateToken")));
 				if (UtilsAccount.notEmpty(login)) {
 					listLogin.add(login);
 				}
@@ -71,14 +79,18 @@ public class LoginImplDAO implements LoginDAO {
 	public Login createLogin(Login login) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(login)) {
-				query = "INSERT INTO LOGIN (login,password,idUser) VALUES (?,?,?)";
+				query = "INSERT INTO LOGIN (login,password,idUser,tokenLogin,creationDate,modificationDateToken) VALUES (?,?,?,?,?,?)";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, login.getLogin());
 				statement.setString(2, login.getPassword());
 				statement.setInt(3, login.getIdUser());
-				
+				statement.setString(4, login.getTokenlogin());
+				statement.setString(5, UtilsAccount.convertDateToString(login.getCreationDate()));
+				statement.setString(6, UtilsAccount.convertDateToString(login.getModificationDateToken()));
+
 				int result = statement.executeUpdate();
-				if(result > 0) login.setId(result);
+				if (result > 0)
+					login.setId(result);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -91,13 +103,17 @@ public class LoginImplDAO implements LoginDAO {
 	public boolean updateLogin(Login login) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(login)) {
-				query = "UPDATE LOGIN" + "SET login = ?," + "password = ?," + "idUser = ?" + "WHERE id = ?";
+				query = "UPDATE LOGIN" + "SET login = ?," + "password = ?," + "idUser = ?" + "tokenLogin = ?"
+						+ "creationDate = ?" + "modificationDateToken = ?" + "WHERE id = ?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, login.getLogin());
 				statement.setString(2, login.getPassword());
 				statement.setInt(3, login.getIdUser());
-				statement.setInt(4, login.getId());
-				
+				statement.setString(4, login.getTokenlogin());
+				statement.setString(5, UtilsAccount.convertDateToString(login.getCreationDate()));
+				statement.setString(6, UtilsAccount.convertDateToString(login.getModificationDateToken()));
+				statement.setInt(7, login.getId());
+
 				int result = statement.executeUpdate();
 				return result > 0 ? true : false;
 			}

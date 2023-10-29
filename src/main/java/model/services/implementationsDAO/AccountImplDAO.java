@@ -34,6 +34,8 @@ public class AccountImplDAO implements AccountDAO{
 					account.setBalance(result.getFloat("balance"));
 					account.setUserId(result.getInt("accountUserId"));
 					account.setStatus(result.getInt("statusId"));
+					account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(account) ? account : null;
@@ -61,6 +63,8 @@ public class AccountImplDAO implements AccountDAO{
 					account.setBalance(result.getFloat("balance"));
 					account.setUserId(result.getInt("accountUserId"));
 					account.setStatus(result.getInt("statusId"));
+					account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(account) ? account : null;
@@ -88,6 +92,8 @@ public class AccountImplDAO implements AccountDAO{
 					account.setBalance(result.getFloat("balance"));
 					account.setUserId(userId);
 					account.setStatus(result.getInt("statusId"));
+					account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(account) ? account : null;
@@ -116,6 +122,8 @@ public class AccountImplDAO implements AccountDAO{
 					account.setBalance(result.getFloat("balance"));
 					account.setUserId(userId);
 					account.setStatus(result.getInt("statusId"));
+					account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 					if(UtilsAccount.notEmpty(account)) {
 						listAccount.add(account);
 					}
@@ -146,6 +154,8 @@ public class AccountImplDAO implements AccountDAO{
 					account.setBalance(result.getFloat("balance"));
 					account.setUserId(result.getInt("accountUserId"));
 					account.setStatus(result.getInt("statusId"));
+					account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 					if(UtilsAccount.notEmpty(account)) {
 						listAccount.add(account);
 					}
@@ -174,6 +184,8 @@ public class AccountImplDAO implements AccountDAO{
 				account.setBalance(result.getFloat("balance"));
 				account.setUserId(result.getInt("accountUserId"));
 				account.setStatus(result.getInt("statusId"));
+				account.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+				account.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				if (UtilsAccount.notEmpty(account)) {
 					listAccount.add(account);
 				}
@@ -189,14 +201,16 @@ public class AccountImplDAO implements AccountDAO{
 	public Account createAccount(Account account) throws SQLException {
 		if(UtilsAccount.notEmpty(account)) {
 			try {
-				query = "INSERT INTO ACCOUNT (accountNumber,accountProfileId,balance,accountUserId,statusId) "
-						+ "VALUES (?,?,?,?,?)";
+				query = "INSERT INTO ACCOUNT (accountNumber,accountProfileId,balance,accountUserId,statusId,creationdate,modificationDate) "
+						+ "VALUES (?,?,?,?,?,?,?)";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, account.getAccountNumber());
 				statement.setInt(2, account.getAccountProfile());
 				statement.setFloat(3, account.getBalance());
 				statement.setInt(4, account.getUserId());
 				statement.setInt(5, account.getStatus());
+				statement.setString(6, UtilsAccount.convertDateToString(account.getCreationDate()));
+				statement.setString(7, UtilsAccount.convertDateToString(account.getModificationDate()));
 				
 				int result = statement.executeUpdate();
 				if(result > 0) account.setId(result);
@@ -218,7 +232,9 @@ public class AccountImplDAO implements AccountDAO{
 						+ "accountProfileId = ?,"
 						+ "balance = ?,"
 						+ "accountUserId = ?,"
-						+ "statusId = ?"
+						+ "statusId = ?,"
+						+ "creationdate = ?,"
+						+ "modificationdate = ?"
 						+ "WHERE id = ?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, account.getAccountNumber());
@@ -226,7 +242,9 @@ public class AccountImplDAO implements AccountDAO{
 				statement.setFloat(3, account.getBalance());
 				statement.setInt(4, account.getUserId());
 				statement.setInt(5, account.getStatus());
-				statement.setInt(6, account.getId());
+				statement.setString(6, UtilsAccount.convertDateToString(account.getCreationDate()));
+				statement.setString(7, UtilsAccount.convertDateToString(account.getModificationDate()));
+				statement.setInt(8, account.getId());
 				
 				int result = statement.executeUpdate();
 				return result > 0 ? true: false;

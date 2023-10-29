@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.Date;
+
 public class Account {
 	private int id;
 	private String accountNumber;
@@ -7,6 +9,8 @@ public class Account {
 	private int accountProfile;
 	private int status;
 	private int userId;
+	private Date creationDate;
+	private Date modificationDate;
 	
 	public Account() {
 		super();
@@ -51,9 +55,26 @@ public class Account {
 		this.userId = userId;
 	}
 	
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", typeAccount="
-				+ accountProfile + ", status=" + status + ", userId=" + userId + "]";
+		return "Account [id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", accountProfile="
+				+ accountProfile + ", status=" + status + ", userId=" + userId + ", creationDate=" + creationDate
+				+ ", modificationDate=" + modificationDate + "]";
 	}
 }

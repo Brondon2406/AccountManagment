@@ -1,6 +1,11 @@
 package model.entities;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import model.managment.AccountManagment;
+import model.utils.UtilsAccount;
 
 public class Branches {
 	private int id;
@@ -9,6 +14,7 @@ public class Branches {
 	private int idHeader;
 	private int numberAgent;
 	private int status;
+	private Date creationDate;
 	private List<Users> listUsers;
 	
 	public Branches() {
@@ -63,7 +69,13 @@ public class Branches {
 		this.status = status;
 	}
 
-	public List<Users> getListUsers() {
+	public List<Users> getListUsers() throws SQLException {
+		if(id > 0) {
+			List<Users> listUsersAcc = AccountManagment.getInstance().getUserByBranchId(id);
+			if(UtilsAccount.notEmpty(listUsersAcc)) {
+				listUsers = listUsersAcc;
+			}
+		}
 		return listUsers;
 	}
 
@@ -71,9 +83,18 @@ public class Branches {
 		this.listUsers = listUsers;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Branches [id=" + id + ", name=" + name + ", address=" + address + ", idHeader=" + idHeader
-				+ ", numberAgent=" + numberAgent + ", status=" + status + ", listUsers=" + listUsers + "]";
+				+ ", numberAgent=" + numberAgent + ", status=" + status + ", creationDate=" + creationDate
+				+ ", listUsers=" + listUsers + "]";
 	}
 }

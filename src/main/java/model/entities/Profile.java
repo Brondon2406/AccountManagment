@@ -1,8 +1,11 @@
 package model.entities;
 
+import java.util.Date;
+
 public class Profile {
 	private int id;
 	private String name;
+	private Date creationDate;
 	
 	public Profile() {
 		super();
@@ -24,8 +27,16 @@ public class Profile {
 		this.name = name;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", name=" + name + "]";
+		return "Profile [id=" + id + ", name=" + name + ", creationDate=" + creationDate + "]";
 	}
 }
