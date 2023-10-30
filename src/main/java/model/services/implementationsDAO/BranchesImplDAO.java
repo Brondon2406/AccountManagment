@@ -15,13 +15,13 @@ import model.utils.UtilsAccount;
 public class BranchesImplDAO implements BranchesDAO {
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
-	private Branches branch;
+	private Branches branch = new Branches();
 
 	@Override
 	public Branches getBrancheById(int idBranch) throws SQLException {
 		if (idBranch > 0) {
 			try {
-				query = "SELECT * FROM BRANCHES WHERE id=?";
+				query = "SELECT * FROM BRANCHESMANAGER WHERE id=?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, idBranch);
 				ResultSet result = statement.executeQuery();
@@ -50,7 +50,7 @@ public class BranchesImplDAO implements BranchesDAO {
 	public List<Branches> getAllBranches() throws SQLException {
 		List<Branches> branches = new ArrayList<>();
 		try {
-			query = "SELECT * FROM BRANCHES WHERE id=?";
+			query = "SELECT * FROM BRANCHESMANAGER WHERE id=?;";
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
@@ -78,7 +78,7 @@ public class BranchesImplDAO implements BranchesDAO {
 	public Branches createBranch(Branches branch) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(branch)) {
-				query = "INSERT INTO BRANCHES (name,address,idHeader,numberAgent,idStatus,creationDate,modificationDate) "
+				query = "INSERT INTO BRANCHESMANAGER (name,address,idHeader,numberAgent,idStatus,creationDate,modificationDate);"
 						+ "VALUES (?,?,?,?,?,?,?)";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, branch.getName());
@@ -105,8 +105,8 @@ public class BranchesImplDAO implements BranchesDAO {
 	public boolean updateBranches(Branches branch) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(branch)) {
-				query = "UPDATE BRANCHES" + "SET name = ?," + "address = ?," + "idHeader = ?," + "numberAgent = ?,"
-						+ "idStatus = ?" + "creationDate = ?" + "modificationDate = ?" + "WHERE id = ?";
+				query = "UPDATE BRANCHESMANAGER" + "SET name = ?," + "address = ?," + "idHeader = ?," + "numberAgent = ?,"
+						+ "idStatus = ?" + "creationDate = ?" + "modificationDate = ?" + "WHERE id = ?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, branch.getName());
 				statement.setString(2, branch.getAddress());

@@ -14,7 +14,14 @@ import model.entities.Users;
 public class UtilsAccount {
 	
 	public static boolean notEmpty(String value) {
-		if(value != null) {
+		if(value != null || value != "") {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isEmpty(String value) {
+		if(value == null || value == "") {
 			return true;
 		}
 		return false;
@@ -22,6 +29,13 @@ public class UtilsAccount {
 	
 	public static boolean notEmpty(Object obj) {
 		if(obj != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isEmpty(Object obj) {
+		if(obj == null) {
 			return true;
 		}
 		return false;

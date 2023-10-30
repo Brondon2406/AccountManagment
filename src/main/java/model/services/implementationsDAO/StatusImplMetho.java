@@ -15,13 +15,13 @@ import model.utils.UtilsAccount;
 public class StatusImplMetho implements StatusDAO {
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
-	private Status status;
+	private Status status = new Status();
 
 	@Override
 	public Status getStatusById(int id) throws SQLException {
 		if (id > 0) {
 			try {
-				query = "SELECT * FROM STATUS WHERE id=?";
+				query = "SELECT * FROM STATUSMANAGER WHERE id=?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, id);
 				ResultSet result = statement.executeQuery();
@@ -45,7 +45,7 @@ public class StatusImplMetho implements StatusDAO {
 	public List<Status> getAllStatus() throws SQLException {
 		List<Status> listStatus = new ArrayList<>();
 		try {
-			query = "SELECT * FROM STATUS";
+			query = "SELECT * FROM STATUSMANAGER;";
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
@@ -67,7 +67,7 @@ public class StatusImplMetho implements StatusDAO {
 	@Override
 	public Status createStatus(Status status) throws SQLException {
 		try {
-			query = "INSERT INTO STATUS (name,creationDate) VALUES (?,?)";
+			query = "INSERT INTO STATUSMANAGER (name,creationDate) VALUES (?,?);";
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, status.getName());
 			statement.setString(2, UtilsAccount.convertDateToString(status.getCreationDate()));
@@ -86,7 +86,7 @@ public class StatusImplMetho implements StatusDAO {
 	public boolean updateStatus(Status status) throws SQLException {
 		if(UtilsAccount.notEmpty(status)) {
 			try {
-				query = "UPDATE STATUS SET name = ?, creationDate = ? WHERE id = ?";
+				query = "UPDATE STATUSMANAGER SET name = ?, creationDate = ? WHERE id = ?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, status.getName());
 				statement.setString(2, UtilsAccount.convertDateToString(status.getCreationDate()));

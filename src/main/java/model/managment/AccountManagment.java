@@ -6,12 +6,6 @@ import model.services.implementationsDAO.LoginImplDAO;
 import model.services.implementationsDAO.ProfileImplDAO;
 import model.services.implementationsDAO.StatusImplMetho;
 import model.services.implementationsDAO.UsersImplDAO;
-import model.services.interfaceDAO.AccountDAO;
-import model.services.interfaceDAO.BranchesDAO;
-import model.services.interfaceDAO.LoginDAO;
-import model.services.interfaceDAO.ProfileDAO;
-import model.services.interfaceDAO.StatusDAO;
-import model.services.interfaceDAO.UsersDAO;
 import model.utils.UtilsAccount;
 
 import java.sql.SQLException;
@@ -28,21 +22,12 @@ import model.entities.Users;
 
 public class AccountManagment {
 	
-	private static AccountManagment SINGLETON = null;
-	private static UsersDAO userDAO = new UsersImplDAO();
-	private static AccountDAO accountDao = new AccountImplDAO();
-	private static BranchesDAO  branchDao = new BranchesImplDAO();
-	private static LoginDAO loginDao = new LoginImplDAO();
-	private static ProfileDAO profileDao = new ProfileImplDAO();
-	private static StatusDAO statusDao = new StatusImplMetho();
-	
-	
-	public static AccountManagment getInstance() {
-		if(SINGLETON == null) {
-			SINGLETON = new AccountManagment();
-		}
-		return SINGLETON;
-	}
+	private static UsersImplDAO userDAO = new UsersImplDAO();
+	private static AccountImplDAO accountDao = new AccountImplDAO();
+	private static BranchesImplDAO  branchDao = new BranchesImplDAO();
+	private static LoginImplDAO loginDao = new LoginImplDAO();
+	private static ProfileImplDAO profileDao = new ProfileImplDAO();
+	private static StatusImplMetho statusDao = new StatusImplMetho();
 	
 	// On this way we will create all method for users class
 	
@@ -234,13 +219,7 @@ public class AccountManagment {
 	public Login getLoginByUserLogin(String userLogin) throws SQLException{
 		if(UtilsAccount.notEmpty(userLogin)) {
 			Login login = new Login();
-			List<Login> allLogins = loginDao.getAllLogin();
-			for(Login log : allLogins) {
-				if(log.getLogin().equalsIgnoreCase(userLogin)) {
-					login = log;
-					break;
-				}
-			}
+			login = loginDao.getLoginByLogin(userLogin);
 			return UtilsAccount.notEmpty(login) ? login : null;
 		}
 		return null;

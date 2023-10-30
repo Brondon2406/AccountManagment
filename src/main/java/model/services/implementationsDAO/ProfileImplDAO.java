@@ -16,13 +16,13 @@ public class ProfileImplDAO implements ProfileDAO {
 
 	static Connection con = DatabaseConnection.getConnection();
 	private String query = "";
-	private Profile profile;
+	private Profile profile = new Profile();
 
 	@Override
 	public Profile getProfileById(int id) throws SQLException {
 		if (id > 0) {
 			try {
-				query = "SELECT * FROM PROFILE WHERE id=?";
+				query = "SELECT * FROM PROFILEMANAGER WHERE id=?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setInt(1, id);
 				ResultSet result = statement.executeQuery();
@@ -46,7 +46,7 @@ public class ProfileImplDAO implements ProfileDAO {
 	public List<Profile> getAllProfile() throws SQLException {
 		List<Profile> listProfile = new ArrayList<>();
 		try {
-			query = "SELECT * FROM PROFILE";
+			query = "SELECT * FROM PROFILEMANAGER;";
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
@@ -69,7 +69,7 @@ public class ProfileImplDAO implements ProfileDAO {
 	public Profile createProfile(Profile profile) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(profile)) {
-				query = "INSERT INTO PROFILE (name,creationDate) VALUES (?,?)";
+				query = "INSERT INTO PROFILEMANAGER (name,creationDate) VALUES (?,?);";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, profile.getName());
 				statement.setString(2, UtilsAccount.convertDateToString(profile.getCreationDate()));
@@ -89,7 +89,7 @@ public class ProfileImplDAO implements ProfileDAO {
 	public boolean updateProfile(Profile profile) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(profile)) {
-				query = "UPDATE PROFILE SET name = ?,creationDate = ? WHERE id = ?";
+				query = "UPDATE PROFILEMANAGER SET name = ?,creationDate = ? WHERE id = ?;";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, profile.getName());
 				statement.setString(2, UtilsAccount.convertDateToString(profile.getCreationDate()));
