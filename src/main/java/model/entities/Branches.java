@@ -1,14 +1,21 @@
 package model.entities;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import model.managment.AccountManagment;
+import model.utils.UtilsAccount;
 
 public class Branches {
 	private int id;
 	private String name;
 	private String address;
 	private int idHeader;
-	private String numberAgent;
+	private int numberAgent;
 	private int status;
+	private Date creationDate;
+	private Date modificationDate;
 	private List<Users> listUsers;
 	
 	public Branches() {
@@ -47,11 +54,11 @@ public class Branches {
 		this.idHeader = idHeader;
 	}
 
-	public String getNumberAgent() {
+	public int getNumberAgent() {
 		return numberAgent;
 	}
 
-	public void setNumberAgent(String numberAgent) {
+	public void setNumberAgent(int numberAgent) {
 		this.numberAgent = numberAgent;
 	}
 	
@@ -63,7 +70,11 @@ public class Branches {
 		this.status = status;
 	}
 
-	public List<Users> getListUsers() {
+	public List<Users> getListUsers() throws SQLException {
+		if(id > 0) {
+			List<Users> listUsersAcc = AccountManagment.getInstance().getUserByBranchId(id);
+			listUsers = UtilsAccount.notEmpty(listUsersAcc) ? listUsersAcc : null;
+		}
 		return listUsers;
 	}
 
@@ -71,9 +82,26 @@ public class Branches {
 		this.listUsers = listUsers;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Branches [id=" + id + ", name=" + name + ", address=" + address + ", idHeader=" + idHeader
-				+ ", numberAgent=" + numberAgent + ", status=" + status + ", listUsers=" + listUsers + "]";
+				+ ", numberAgent=" + numberAgent + ", status=" + status + ", creationDate=" + creationDate
+				+ ", modificationDate=" + modificationDate + ", listUsers=" + listUsers + "]";
 	}
 }

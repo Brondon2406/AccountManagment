@@ -1,6 +1,11 @@
 package model.entities;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import model.managment.AccountManagment;
+import model.utils.UtilsAccount;
 
 public class Users {
 	private int id;
@@ -14,6 +19,8 @@ public class Users {
 	private int branchId;
 	private String address;
 	private String telephone;
+	private Date creationDate;
+	private Date modificationDate;
 	private List<Account> listAccount;
 	
 	public Users() {
@@ -108,7 +115,11 @@ public class Users {
 		this.telephone = telephone;
 	}
 
-	public List<Account> getListAccount() {
+	public List<Account> getListAccount() throws SQLException{
+		if(id > 0) {
+			List<Account> listAccountsUser = AccountManagment.getInstance().getListAccountByUserId(id);
+			listAccount = UtilsAccount.notEmpty(listAccountsUser) ? listAccountsUser : null;
+		}
 		return listAccount;
 	}
 
@@ -116,11 +127,28 @@ public class Users {
 		this.listAccount = listAccount;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Users [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + 
-				", identificationId=" + identificationId + ", profile="
-				+ profile + ", status=" + status + ", branchId=" + branchId + ", address=" + address + ", telephone="
-				+ telephone + ", listAccount=" + listAccount + "]";
+		return "Users [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", login=" + login
+				+ ", identificationId=" + identificationId + ", profile=" + profile + ", status=" + status
+				+ ", branchId=" + branchId + ", address=" + address + ", telephone=" + telephone + ", creationDate="
+				+ creationDate + ", modificationDate=" + modificationDate + ", listAccount=" + listAccount + "]";
 	}
+	
 }

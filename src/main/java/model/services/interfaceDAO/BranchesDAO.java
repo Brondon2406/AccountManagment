@@ -1,13 +1,14 @@
 package model.services.interfaceDAO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import model.entities.Branches;
 
 public interface BranchesDAO {
 	
-	public Branches getBrancheById(int idBranch);
-	public List<Branches> getAllBranches();
-	public List<Branches> getBranchesByStatus(int idStatus);
-	public List<Branches> getBranchesByName(String name);
+	public Branches getBrancheById(int idBranch) throws SQLException;
+	public List<Branches> getAllBranches() throws SQLException;
+	public Branches createBranch(Branches branch) throws SQLException;
+	public boolean updateBranches(Branches branch) throws SQLException;
 }
