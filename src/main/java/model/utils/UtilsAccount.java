@@ -9,6 +9,7 @@ import java.util.Date;
 import java.text.DateFormat;
 
 import model.entities.Account;
+import model.entities.Users;
 
 public class UtilsAccount {
 	
@@ -153,6 +154,54 @@ public class UtilsAccount {
 			return listResultAccount;
 		}
 		return listAccount;
+	}
+	
+	public static List<Users> listUsersFilterByCriterialModificationdate(List<Users> listUsers ,String dateModif){
+		if(UtilsAccount.notEmpty(listUsers)) {
+			List<Users> listResultUsers = new ArrayList<>();
+			if(notEmpty(dateModif)) {
+				Date dt = convertStringToDate(dateModif);
+				for(Users user : listUsers) {
+					if(user.getModificationDate() == dt) {
+						listResultUsers.add(user);
+					}
+				}
+			}
+			return listResultUsers;
+		}
+		return listUsers;
+	}
+	
+	public static List<Account> listAccountFilterByCriterialCreationDate(List<Account> listAccount ,String dateCreated){
+		if(UtilsAccount.notEmpty(listAccount)) {
+			List<Account> listResultAccount = new ArrayList<>();
+			if(notEmpty(dateCreated)) {
+				Date dt = convertStringToDate(dateCreated);
+				for(Account account : listAccount) {
+					if(account.getCreationDate() == dt) {
+						listResultAccount.add(account);
+					}
+				}
+			}
+			return listResultAccount;
+		}
+		return listAccount;
+	}
+	
+	public static List<Users> listUsersFilterByCriterialCreationDate(List<Users> listUsers ,String dateCreated){
+		if(UtilsAccount.notEmpty(listUsers)) {
+			List<Users> listResultUsers = new ArrayList<>();
+			if(notEmpty(dateCreated)) {
+				Date dt = convertStringToDate(dateCreated);
+				for(Users user : listUsers) {
+					if(user.getCreationDate() == dt) {
+						listResultUsers.add(user);
+					}
+				}
+			}
+			return listResultUsers;
+		}
+		return listUsers;
 	}
 	
 	public static Date convertStringToDate (String dateString) {

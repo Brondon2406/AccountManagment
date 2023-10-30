@@ -40,6 +40,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(result.getInt("idStatus"));
 					user.setProfile(result.getInt("profileId"));
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(user) ? user : null;
@@ -72,6 +74,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(result.getInt("idStatus"));
 					user.setProfile(result.getInt("profileId"));
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(user) ? user : null;
@@ -104,6 +108,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(result.getInt("idStatus"));
 					user.setProfile(result.getInt("profileId"));
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(user) ? user : null;
@@ -134,6 +140,8 @@ public class UsersImplDAO implements UsersDAO {
 				user.setStatus(result.getInt("idStatus"));
 				user.setProfile(result.getInt("profileId"));
 				user.setTelephone(result.getString("phoneNumber"));
+				user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+				user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 
 				if (UtilsAccount.notEmpty(user)) {
 					listUsers.add(user);
@@ -168,6 +176,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(result.getInt("idStatus"));
 					user.setProfile(idProfile);
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 
 					if (UtilsAccount.notEmpty(user)) {
 						listUsers.add(user);
@@ -204,6 +214,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(idStatus);
 					user.setProfile(result.getInt("profileId"));
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 
 					if (UtilsAccount.notEmpty(user)) {
 						listUsers.add(user);
@@ -240,6 +252,8 @@ public class UsersImplDAO implements UsersDAO {
 					user.setStatus(result.getInt("idStatus"));
 					user.setProfile(result.getInt("profileId"));
 					user.setTelephone(result.getString("phoneNumber"));
+					user.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					user.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 
 					if (UtilsAccount.notEmpty(user)) {
 						listUsers.add(user);
@@ -256,8 +270,8 @@ public class UsersImplDAO implements UsersDAO {
 	}
 
 	@Override
-	public Users createUsers(Users use) throws SQLException {
-		if(UtilsAccount.notEmpty(use)) {
+	public Users createUsers(Users user) throws SQLException {
+		if(UtilsAccount.notEmpty(user)) {
 			try {
 				query = "INSERT INTO USERS (name"
 						+ ",surname"
@@ -268,29 +282,33 @@ public class UsersImplDAO implements UsersDAO {
 						+ ",login"
 						+ ",idStatus"
 						+ ",profileId"
-						+ ",phoneNumber) "
-						+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
+						+ ",phoneNumber"
+						+ ",creationDate"
+						+ ",modificationDate)"
+						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 				PreparedStatement statement = con.prepareStatement(query);
-				statement.setString(1,use.getName());
-				statement.setString(2,use.getSurname());
-				statement.setString(3,use.getAddress());
-				statement.setString(4,use.getEmail());
-				statement.setInt(5,use.getBranchId());
-				statement.setString(6,use.getIdentificationId());
-				statement.setString(7,use.getLogin());
-				statement.setInt(8,use.getStatus());
-				statement.setInt(9,use.getProfile());
-				statement.setString(10,use.getTelephone());
+				statement.setString(1,user.getName());
+				statement.setString(2,user.getSurname());
+				statement.setString(3,user.getAddress());
+				statement.setString(4,user.getEmail());
+				statement.setInt(5,user.getBranchId());
+				statement.setString(6,user.getIdentificationId());
+				statement.setString(7,user.getLogin());
+				statement.setInt(8,user.getStatus());
+				statement.setInt(9,user.getProfile());
+				statement.setString(10,user.getTelephone());
+				statement.setString(11,UtilsAccount.convertDateToString(user.getCreationDate()));
+				statement.setString(12,UtilsAccount.convertDateToString(user.getModificationDate()));
 				
 				int result = statement.executeUpdate();
-				if(result > 0) use.setId(result);
+				if(result > 0) user.setId(result);
 				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				return use;
+				return user;
 			}
 		}
-		return use;
+		return user;
 	}
 
 	@Override
@@ -307,6 +325,8 @@ public class UsersImplDAO implements UsersDAO {
 						+ ",idStatus = ?"
 						+ ",profileId = ?"
 						+ ",phoneNumber = ?"
+						+ ",creationDate = ?"
+						+ ",modificationDate = ?"
 						+ "WHERE id = ?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1,user.getName());
@@ -319,7 +339,9 @@ public class UsersImplDAO implements UsersDAO {
 				statement.setInt(8,user.getStatus());
 				statement.setInt(9,user.getProfile());
 				statement.setString(10,user.getTelephone());
-				statement.setInt(11,user.getId());
+				statement.setString(11,UtilsAccount.convertDateToString(user.getCreationDate()));
+				statement.setString(12,UtilsAccount.convertDateToString(user.getModificationDate()));
+				statement.setInt(13,user.getId());
 				
 				int result = statement.executeUpdate();
 				return result > 0 ? true : false;

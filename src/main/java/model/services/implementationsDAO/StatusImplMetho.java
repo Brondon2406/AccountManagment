@@ -29,6 +29,7 @@ public class StatusImplMetho implements StatusDAO {
 				while (result.next()) {
 					status.setId(id);
 					status.setName(result.getString("name"));
+					status.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
 				}
 
 				return UtilsAccount.notEmpty(status) ? status : null;
@@ -51,6 +52,7 @@ public class StatusImplMetho implements StatusDAO {
 			while (result.next()) {
 				status.setId(result.getInt("id"));
 				status.setName(result.getString("name"));
+				status.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
 				if (UtilsAccount.notEmpty(status)) {
 					listStatus.add(status);
 				}
@@ -65,9 +67,10 @@ public class StatusImplMetho implements StatusDAO {
 	@Override
 	public Status createStatus(Status status) throws SQLException {
 		try {
-			query = "INSERT INTO STATUS (name) VALUES (?)";
+			query = "INSERT INTO STATUS (name,creationDate) VALUES (?,?)";
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, status.getName());
+			statement.setString(2, UtilsAccount.convertDateToString(status.getCreationDate()));
 
 			int result = statement.executeUpdate();
 			if (result > 0)
@@ -83,10 +86,11 @@ public class StatusImplMetho implements StatusDAO {
 	public boolean updateStatus(Status status) throws SQLException {
 		if(UtilsAccount.notEmpty(status)) {
 			try {
-				query = "UPDATE STATUS SET name = ? WHERE id = ?";
+				query = "UPDATE STATUS SET name = ?, creationDate = ? WHERE id = ?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, status.getName());
-				statement.setInt(2, status.getId());
+				statement.setString(2, UtilsAccount.convertDateToString(status.getCreationDate()));
+				statement.setInt(3, status.getId());
 
 				int result = statement.executeUpdate();
 				return result > 0 ? true : false;

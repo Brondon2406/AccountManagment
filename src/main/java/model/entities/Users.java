@@ -1,7 +1,11 @@
 package model.entities;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import model.managment.AccountManagment;
+import model.utils.UtilsAccount;
 
 public class Users {
 	private int id;
@@ -111,7 +115,11 @@ public class Users {
 		this.telephone = telephone;
 	}
 
-	public List<Account> getListAccount() {
+	public List<Account> getListAccount() throws SQLException{
+		if(id > 0) {
+			List<Account> listAccountsUser = AccountManagment.getInstance().getListAccountByUserId(id);
+			listAccount = UtilsAccount.notEmpty(listAccountsUser) ? listAccountsUser : null;
+		}
 		return listAccount;
 	}
 

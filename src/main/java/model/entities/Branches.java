@@ -15,6 +15,7 @@ public class Branches {
 	private int numberAgent;
 	private int status;
 	private Date creationDate;
+	private Date modificationDate;
 	private List<Users> listUsers;
 	
 	public Branches() {
@@ -72,9 +73,7 @@ public class Branches {
 	public List<Users> getListUsers() throws SQLException {
 		if(id > 0) {
 			List<Users> listUsersAcc = AccountManagment.getInstance().getUserByBranchId(id);
-			if(UtilsAccount.notEmpty(listUsersAcc)) {
-				listUsers = listUsersAcc;
-			}
+			listUsers = UtilsAccount.notEmpty(listUsersAcc) ? listUsersAcc : null;
 		}
 		return listUsers;
 	}
@@ -91,10 +90,18 @@ public class Branches {
 		this.creationDate = creationDate;
 	}
 
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Branches [id=" + id + ", name=" + name + ", address=" + address + ", idHeader=" + idHeader
 				+ ", numberAgent=" + numberAgent + ", status=" + status + ", creationDate=" + creationDate
-				+ ", listUsers=" + listUsers + "]";
+				+ ", modificationDate=" + modificationDate + ", listUsers=" + listUsers + "]";
 	}
 }

@@ -33,6 +33,8 @@ public class BranchesImplDAO implements BranchesDAO {
 					branch.setIdHeader(result.getInt("idHeader"));
 					branch.setNumberAgent(result.getInt("numberAgent"));
 					branch.setStatus(result.getInt("idStatus"));
+					branch.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+					branch.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 				}
 
 				return UtilsAccount.notEmpty(branch) ? branch : null;
@@ -59,6 +61,8 @@ public class BranchesImplDAO implements BranchesDAO {
 				branch.setIdHeader(result.getInt("idHeader"));
 				branch.setNumberAgent(result.getInt("numberAgent"));
 				branch.setStatus(result.getInt("idStatus"));
+				branch.setCreationDate(UtilsAccount.convertStringToDate(result.getString("creationDate")));
+				branch.setModificationDate(UtilsAccount.convertStringToDate(result.getString("modificationDate")));
 
 				branches.add(branch);
 			}
@@ -74,13 +78,16 @@ public class BranchesImplDAO implements BranchesDAO {
 	public Branches createBranch(Branches branch) throws SQLException {
 		try {
 			if (UtilsAccount.notEmpty(branch)) {
-				query = "INSERT INTO BRANCHES (name,address,idHeader,numberAgent,idStatus) " + "VALUES (?,?,?,?,?)";
+				query = "INSERT INTO BRANCHES (name,address,idHeader,numberAgent,idStatus,creationDate,modificationDate) "
+						+ "VALUES (?,?,?,?,?,?,?)";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, branch.getName());
 				statement.setString(2, branch.getAddress());
 				statement.setInt(3, branch.getIdHeader());
 				statement.setInt(4, branch.getNumberAgent());
 				statement.setInt(5, branch.getStatus());
+				statement.setString(6, UtilsAccount.convertDateToString(branch.getCreationDate()));
+				statement.setString(7, UtilsAccount.convertDateToString(branch.getModificationDate()));
 
 				int result = statement.executeUpdate();
 				if (result > 0)
@@ -99,15 +106,17 @@ public class BranchesImplDAO implements BranchesDAO {
 		try {
 			if (UtilsAccount.notEmpty(branch)) {
 				query = "UPDATE BRANCHES" + "SET name = ?," + "address = ?," + "idHeader = ?," + "numberAgent = ?,"
-						+ "idStatus = ?" + "WHERE id = ?";
+						+ "idStatus = ?" + "creationDate = ?" + "modificationDate = ?" + "WHERE id = ?";
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, branch.getName());
 				statement.setString(2, branch.getAddress());
 				statement.setInt(3, branch.getIdHeader());
 				statement.setInt(4, branch.getNumberAgent());
 				statement.setInt(5, branch.getStatus());
-				statement.setInt(6, branch.getId());
-				
+				statement.setString(6, UtilsAccount.convertDateToString(branch.getCreationDate()));
+				statement.setString(7, UtilsAccount.convertDateToString(branch.getModificationDate()));
+				statement.setInt(8, branch.getId());
+
 				int result = statement.executeUpdate();
 				return result > 0 ? true : false;
 			}
